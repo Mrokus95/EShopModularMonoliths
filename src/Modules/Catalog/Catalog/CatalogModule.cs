@@ -11,15 +11,7 @@ namespace Catalog
 
         public static IServiceCollection AddCatalogModule(this IServiceCollection services, IConfiguration configuration)
         {
-            
-            services.AddMediatR(cfg => {
-                cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-                cfg.AddOpenBehavior(typeof(Shared.Behaviors.ValidationBehavior<,>));
-                cfg.AddOpenBehavior(typeof(Shared.Behaviors.LoggingBehavior<,>));
-            });
-
-            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-
+           
             var connectionString = configuration.GetConnectionString("Database");
 
             services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();

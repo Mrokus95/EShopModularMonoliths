@@ -2,25 +2,23 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace Shared.Extensions
+namespace Shared.Extensions;
+public static class CarterExtentions
 {
-    public static class CarterExtensions
+    public static IServiceCollection AddCarterWithAssemblies
+        (this IServiceCollection services, params Assembly[] assemblies)
     {
-        public static IServiceCollection AddCarterWithAssemblies
-            (this IServiceCollection services, params Assembly[] assemblies) 
+        services.AddCarter(configurator: config =>
         {
-            services.AddCarter(configurator: config =>
+            foreach (var assembly in assemblies)
             {
-                foreach (var assembly in assemblies)
-                {
-                    var modules = assembly.GetTypes()
-                    .Where(t => t.IsAssignableTo(typeof(ICarterModule))).ToArray();
+                var modules = assembly.GetTypes()
+                .Where(t => t.IsAssignableTo(typeof(ICarterModule))).ToArray();
 
-                    config.WithModules(modules);
-                    
-                }
-            });
-            return services;
-        }
+                config.WithModules(modules);
+            }
+        });
+
+        return services;
     }
 }

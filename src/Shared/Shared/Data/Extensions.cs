@@ -27,6 +27,7 @@ namespace Shared.Data
         {
             using var scope = serviceProvider.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<TContext>();
+
             await dbContext.Database.MigrateAsync();
         }
 
